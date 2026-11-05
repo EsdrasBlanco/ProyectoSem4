@@ -17,3 +17,4 @@ export const validateCustomer = (req: Request, res: Response, next: NextFunction
   }
   next();
 };
+

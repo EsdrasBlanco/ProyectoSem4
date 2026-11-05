@@ -2,7 +2,6 @@ import type { Request, Response } from "express";
 import * as CustomerModel from "../models/customer.model.js";
 
 export const getCustomers = async (req: Request, res: Response) => {
-    /*#swagger.tags = ['Customers'] #swagger.summary = 'Obtener todos los clientes' */
     try {
         const customers = await CustomerModel.getAllCustomers();
         res.json(customers);
@@ -11,8 +10,7 @@ export const getCustomers = async (req: Request, res: Response) => {
     }
 };
 
-export const getCustomer = async (req: Request, res: Response) => {
-    /*#swagger.tags = ['Customers'] #swagger.summary = 'Obtener un cliente por id' */
+export const getCustomer = async (req: Request, res: Response) => {    /*#swagger.tags = ['Customers'] #swagger.summary = 'Obtener un cliente por id' */
     try {
         const id = Number(req.params.id);
         const customer = await CustomerModel.getCustomerById(id);
@@ -26,8 +24,7 @@ export const getCustomer = async (req: Request, res: Response) => {
     }
 };
 
-export const createCustomer = async (req: Request, res: Response) => {
-    /*#swagger.tags = ['Customers'] #swagger.summary = 'Crear un nuevo cliente' */
+export const createCustomer = async (req: Request, res: Response) => {    /*#swagger.tags = ['Customers'] #swagger.summary = 'Crear un nuevo cliente' */
     try {
         const { name, email, phone } = req.body;
         const customer = await CustomerModel.insertCustomer(name, email, phone);
@@ -38,7 +35,6 @@ export const createCustomer = async (req: Request, res: Response) => {
 };
 
 export const updateCustomer = async (req: Request, res: Response) => {
-    /*#swagger.tags = ['Customers'] #swagger.summary = 'Actualizar un cliente existente' */
     try {
         const id = Number(req.params.id);
         const { name, email, phone } = req.body;
@@ -52,3 +48,4 @@ export const updateCustomer = async (req: Request, res: Response) => {
         res.status(500).json({ error: "Error al actualizar el cliente" });
     }
 };
+

@@ -27,3 +27,4 @@ export const updateCustomer = async (id: number, name: string, email: string, ph
     );
     return result.rows[0] ?? null;
 };
+

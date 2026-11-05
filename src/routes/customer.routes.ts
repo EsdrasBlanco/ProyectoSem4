@@ -10,3 +10,4 @@ router.post("/customers", validateCustomer, createCustomer);
 router.put("/customers/:id", validateCustomer, updateCustomer);
 
 export default router;
+
