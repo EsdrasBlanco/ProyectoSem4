@@ -2,7 +2,6 @@ import type { Request, Response } from "express";
 import * as ProductModel from "../models/product.model.js";
 
 export const getMenu = async (req: Request, res: Response) => {
-    /*#swagger.tags = ['Products'] #swagger.summary = 'Obtener todos los productos del menu' */
     try {
         const products = await ProductModel.getAllProducts();
         res.json(products);
@@ -12,7 +11,6 @@ export const getMenu = async (req: Request, res: Response) => {
 };
 
 export const getProduct = async (req: Request, res: Response) => {
-    /*#swagger.tags = ['Products'] #swagger.summary = 'Obtener un producto por id' */
     try {
         const id = Number(req.params.id);
         const product = await ProductModel.getProductById(id);
@@ -27,7 +25,6 @@ export const getProduct = async (req: Request, res: Response) => {
 };
 
 export const createProduct = async (req: Request, res: Response) => {
-    /*#swagger.tags = ['Products'] #swagger.summary = 'Crear un nuevo producto' */
     try {
         const { name, description, price, cost, stock } = req.body;
         const product = await ProductModel.insertProduct(name, description, price, cost, stock);
@@ -38,7 +35,6 @@ export const createProduct = async (req: Request, res: Response) => {
 };
 
 export const updateProduct = async (req: Request, res: Response) => {
-    /*#swagger.tags = ['Products'] #swagger.summary = 'Actualizar un producto existente' */
     try {
         const id = Number(req.params.id);
         const { name, description, price, cost, stock } = req.body;

@@ -10,7 +10,7 @@ export const getCustomers = async (req: Request, res: Response) => {
     }
 };
 
-export const getCustomer = async (req: Request, res: Response) => {    /*#swagger.tags = ['Customers'] #swagger.summary = 'Obtener un cliente por id' */
+export const getCustomer = async (req: Request, res: Response) => {    
     try {
         const id = Number(req.params.id);
         const customer = await CustomerModel.getCustomerById(id);
@@ -24,7 +24,7 @@ export const getCustomer = async (req: Request, res: Response) => {    /*#swagge
     }
 };
 
-export const createCustomer = async (req: Request, res: Response) => {    /*#swagger.tags = ['Customers'] #swagger.summary = 'Crear un nuevo cliente' */
+export const createCustomer = async (req: Request, res: Response) => {   
     try {
         const { name, email, phone } = req.body;
         const customer = await CustomerModel.insertCustomer(name, email, phone);
