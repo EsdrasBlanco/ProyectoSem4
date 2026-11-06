@@ -1,10 +1,17 @@
 import type { Request, Response } from "express";
 import * as ProductModel from "../models/product.model.js";
+import { buildPagination, type PaginationInput } from "../middlewares/validate-pagination.js";
 
 export const getMenu = async (req: Request, res: Response) => {
     try {
-        const products = await ProductModel.getAllProducts();
-        res.json(products);
+        const maxPrice = req.query.maxPrice !== undefined ? Number(req.query.maxPrice) : undefined;
+        if (maxPrice !== undefined && (Number.isNaN(maxPrice) || maxPrice < 0)) {
+            res.status(400).json({ errors: { maxPrice: ["maxPrice debe ser un numero mayor o igual a 0"] } });
+            return;
+        }
+        const { page, limit } = res.locals.pagination as PaginationInput;
+        const { rows, total } = await ProductModel.getAllProducts(maxPrice, page, limit);
+        res.json({ data: rows, pagination: buildPagination(page, limit, total) });
     } catch (error) {
         res.status(500).json({ error: "Error al obtener el menu" });
     }

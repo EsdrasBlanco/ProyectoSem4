@@ -1,10 +1,12 @@
 import type { Request, Response } from "express";
 import * as CustomerModel from "../models/customer.model.js";
+import { buildPagination, type PaginationInput } from "../middlewares/validate-pagination.js";
 
 export const getCustomers = async (req: Request, res: Response) => {
     try {
-        const customers = await CustomerModel.getAllCustomers();
-        res.json(customers);
+        const { page, limit } = res.locals.pagination as PaginationInput;
+        const { rows, total } = await CustomerModel.getAllCustomers(limit, (page - 1) * limit);
+        res.json({ data: rows, pagination: buildPagination(page, limit, total) });
     } catch (error) {
         res.status(500).json({ error: "Error al obtener los clientes" });
     }
