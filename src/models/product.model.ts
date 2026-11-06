@@ -2,9 +2,18 @@ import { pool } from "../config/db.js";
 
 const COLUMNS = "id, nombre AS name, descripcion AS description, precio AS price, costo AS cost, stock";
 
-export const getAllProducts = async () => {
-    const result = await pool.query(`SELECT ${COLUMNS} FROM menu ORDER BY id`);
-    return result.rows;
+export const getAllProducts = async (maxPrice?: number, page: number = 1, limit: number = 10) => {
+    const where = maxPrice !== undefined ? "WHERE precio <= $1" : "";
+    const filterParams = maxPrice !== undefined ? [maxPrice] : [];
+    const offset = (page - 1) * limit;
+    const n = filterParams.length;
+
+    const result = await pool.query(
+        `SELECT ${COLUMNS} FROM menu ${where} ORDER BY id LIMIT $${n + 1} OFFSET $${n + 2}`,
+        [...filterParams, limit, offset]
+    );
+    const count = await pool.query(`SELECT COUNT(*)::int AS total FROM menu ${where}`, filterParams);
+    return { rows: result.rows, total: count.rows[0].total as number };
 };
 
 export const getProductById = async (id: number) => {

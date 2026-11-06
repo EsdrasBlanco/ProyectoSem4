@@ -2,9 +2,10 @@ import { pool } from "../config/db.js";
 
 const COLUMNS = "id, nombre AS name, email, celular AS phone";
 
-export const getAllCustomers = async () => {
-    const result = await pool.query(`SELECT ${COLUMNS} FROM cliente ORDER BY id`);
-    return result.rows;
+export const getAllCustomers = async (limit: number, offset: number) => {
+    const result = await pool.query(`SELECT ${COLUMNS} FROM cliente ORDER BY id LIMIT $1 OFFSET $2`, [limit, offset]);
+    const count = await pool.query("SELECT COUNT(*)::int AS total FROM cliente");
+    return { rows: result.rows, total: count.rows[0].total as number };
 };
 
 export const getCustomerById = async (id: number) => {
